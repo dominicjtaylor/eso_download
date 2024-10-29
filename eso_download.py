@@ -315,7 +315,10 @@ def download_assoc(results,mode_requested,mode,download_dir,session=None):
     processed_nights = set()
     for raw in results:
         exp_start = raw['exp_start']
-        obs_time = datetime.strptime(exp_start, "%Y-%m-%dT%H:%M:%S.%fZ")
+        if '.' in exp_start:
+            obs_time = datetime.strptime(exp_start, "%Y-%m-%dT%H:%M:%S.%fZ")
+        else:
+            obs_time = datetime.strptime(exp_start, "%Y-%m-%dT%H:%M:%SZ")
         midday = obs_time.replace(hour=12, minute=0, second=0, microsecond=0)
         if obs_time < midday:
             obs_night = midday - timedelta(days=1)
